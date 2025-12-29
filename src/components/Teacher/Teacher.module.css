@@ -1,0 +1,66 @@
+.teacherContainer {
+    display: flex;
+    gap: 48px;
+    padding: 24px;
+    width: 1184px;
+}
+
+.container {
+    width: 968px;
+}
+
+.container>h2 {
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 1;
+    color: #121417;
+}
+
+.box {
+    display: flex;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+.box>p {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #8a8a89;
+}
+
+.wrapper {
+    display: flex;
+    gap: 32px;
+    align-items: center;
+    margin-right: 64px;
+    margin-left: auto;
+}
+
+.wrapper p {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #121417;
+}
+
+.avatarBox {
+    border: 3px solid #fbe9ba;
+    border-radius: 100px;
+    width: 120px;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.avatar {
+    border-radius: 100px;
+    width: 96px;
+    height: 96px;
+}
+
+.heart {
+    fill: transparent;
+    stroke: black;
+}
