@@ -1,11 +1,17 @@
+import { useState } from "react";
 import type { Teacher } from "../../types/TeacherType";
 import css from "./Teacher.module.css";
+import Button from "../Button/Button";
 
 interface Props {
   teacher: Teacher;
+  selectedLevel: string;
 }
 
-export default function TeacherComponent({ teacher }: Props) {
+export default function TeacherComponent({ teacher, selectedLevel }: Props) {
+  const [loadMore, setLoadMore] = useState(false);
+  console.log(loadMore);
+
   return (
     <div className={css.teacherContainer}>
       <div className={css.avatarBox}>
@@ -37,7 +43,7 @@ export default function TeacherComponent({ teacher }: Props) {
               <p> Rating:{teacher.rating}</p>
             </div>
             <p>
-              Price / 1 hour:{" "}
+              Price / 1 hour:&nbsp;
               <span style={{ color: "#38cd3eff" }}>
                 {teacher.price_per_hour}$
               </span>
@@ -52,10 +58,71 @@ export default function TeacherComponent({ teacher }: Props) {
         <h2>
           {teacher.name}&nbsp;{teacher.surname}
         </h2>
-        <div></div>
-        <button></button>
-        <div></div>
-        <div></div>
+        <div className={css.teacherInfoBox}>
+          <p>
+            Speaks:
+            <span style={{ textDecoration: "underline" }}>
+              {teacher.languages.join(",")}
+            </span>
+          </p>
+          <p>
+            Lesson info:
+            <span>{teacher.lesson_info}</span>
+          </p>
+          <p>
+            Conditions:
+            <span>{teacher.conditions}</span>
+          </p>
+        </div>
+        {!loadMore && (
+          <button
+            className={css.readMoreBtn}
+            onClick={() => setLoadMore(!loadMore)}
+          >
+            Read more
+          </button>
+        )}
+        {loadMore && (
+          <div>
+            <p className={css.experience}>{teacher.experience}</p>
+            <ul className={css.reviewsList}>
+              {teacher.reviews.map(
+                ({ comment, reviewer_name, reviewer_rating }, index) => (
+                  <li className={css.review} key={index}>
+                    <div>
+                      <div className={css.reviewerAvatar}></div>
+                      <div>
+                        <p className={css.revierName}>{reviewer_name}</p>
+                        <div className={css.reviewRating}>
+                          <svg width={16} height={16}>
+                            <use href="/symbol-defs.svg#star" />
+                          </svg>
+                          <span>{reviewer_rating.toFixed(1)}</span>
+                        </div>
+                      </div>
+                    </div>
+                    <p>{comment}</p>
+                  </li>
+                )
+              )}
+            </ul>
+          </div>
+        )}
+        <ul className={css.levelsList}>
+          {teacher.levels.map((item, index) => (
+            <li
+              key={index}
+              className={`${selectedLevel === item ? css.activeLevel : ""}`}
+            >
+              #{item}
+            </li>
+          ))}
+        </ul>
+        {loadMore && (
+          <div className={css.btnBox}>
+            <Button text="Book trial lesson" onClick={() => {}} />
+          </div>
+        )}
       </div>
     </div>
   );

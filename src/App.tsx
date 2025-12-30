@@ -1,13 +1,13 @@
 import { Route, Routes } from "react-router-dom";
-import { useState } from "react";
+// import { useState } from "react";
 
 import Home from "./home/Home";
 import Teachers from "./teachers/Teachers";
 import MainLayout from "./layouts/MainLayout";
 
 function App() {
-  const [isLogin, setIsLogin] = useState(false);
-  const [isRegister, setIsRegister] = useState(false);
+  // const [isLogin, setIsLogin] = useState(false);
+  // const [isRegister, setIsRegister] = useState(false);
 
   return (
     <Routes>
@@ -15,8 +15,8 @@ function App() {
       <Route
         element={
           <MainLayout
-            onLogin={() => setIsLogin(true)}
-            onRegister={() => setIsRegister(true)}
+          // onLogin={() => setIsLogin(true)}
+          // onRegister={() => setIsRegister(true)}
           />
         }
       >

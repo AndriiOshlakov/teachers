@@ -1,15 +1,10 @@
 import Header from "../components/Header/Header";
 import { Outlet } from "react-router-dom";
 
-interface Props {
-  onLogin: () => void;
-  onRegister: () => void;
-}
-
-export default function MainLayout({ onLogin, onRegister }: Props) {
+export default function MainLayout() {
   return (
     <>
-      <Header onLogin={onLogin} onRegister={onRegister} />
+      <Header />
       <Outlet />
     </>
   );
