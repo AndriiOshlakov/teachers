@@ -1,8 +1,9 @@
 import css from "./Teachers.module.css";
 import TeacherComponent from "../components/Teacher/Teacher";
 import { useEffect, useState } from "react";
-import { fetchTeachers } from "../services/services";
+
 import type { Teacher } from "../types/TeacherType";
+import { fetchTeachers } from "../services/teachers";
 
 export default function Teachers() {
   const [teachers, setTeachers] = useState<Teacher[] | []>([]);
