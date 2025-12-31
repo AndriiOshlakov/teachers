@@ -3,6 +3,7 @@ import css from "./Header.module.css";
 import { useState } from "react";
 import Modal from "../Modal/Modal";
 import AuthForm from "../AuthForm/AuthForm";
+import LoginForm from "../LoginForm/LoginForm";
 
 // interface Props {
 //   onLogin: () => void;
@@ -49,7 +50,12 @@ export default function Header() {
       {isAuthOpen && (
         <Modal onClose={() => setIsAuthOpen(false)} children={<AuthForm />} />
       )}
-      {isLoginOpen && <Modal onClose={() => setIsLoginOpen(!isLoginOpen)} />}
+      {isLoginOpen && (
+        <Modal
+          onClose={() => setIsLoginOpen(!isLoginOpen)}
+          children={<LoginForm />}
+        />
+      )}
     </header>
   );
 }
