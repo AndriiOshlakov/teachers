@@ -17,7 +17,11 @@ const authSchema = yup.object({
   password: yup.string().min(6, "Too short").required("Password is required"),
 });
 
-export default function AuthForm() {
+type Props = {
+  onClose: () => void;
+};
+
+export default function AuthForm({ onClose }: Props) {
   const {
     register,
     handleSubmit,
@@ -27,6 +31,7 @@ export default function AuthForm() {
   const onSubmit = async (data: AuthFormValues) => {
     await registerUser(data.email, data.password);
     alert("Користувач зареєстрований");
+    onClose();
     console.log(data);
   };
 

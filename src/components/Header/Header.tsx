@@ -4,15 +4,16 @@ import { useState } from "react";
 import Modal from "../Modal/Modal";
 import AuthForm from "../AuthForm/AuthForm";
 import LoginForm from "../LoginForm/LoginForm";
-
-// interface Props {
-//   onLogin: () => void;
-//   onRegister: () => void;
-// }
+import { useAuth } from "../../auth/useAuth";
+import Loader from "../Loader/Loader";
 
 export default function Header() {
   const [isAuthOpen, setIsAuthOpen] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
+
+  const { isAuthenticated, logout, loading } = useAuth();
+
+  if (loading) return <Loader />;
 
   return (
     <header className={css.header}>
@@ -30,30 +31,41 @@ export default function Header() {
           </div>
         </nav>
         <div className={css.auth}>
-          <button
-            className={css.login}
-            onClick={() => setIsLoginOpen(!isLoginOpen)}
-          >
-            <svg width={20} height={20}>
-              <use href="/symbol-defs.svg#log-in-01" />
-            </svg>
-            <p>Log in</p>
-          </button>
-          <button
-            className={css.reg}
-            onClick={() => setIsAuthOpen(!isAuthOpen)}
-          >
-            Registration
-          </button>
+          {isAuthenticated ? (
+            <button className={css.logout} onClick={logout}>
+              Log out
+            </button>
+          ) : (
+            <>
+              <button
+                className={css.login}
+                onClick={() => setIsLoginOpen(!isLoginOpen)}
+              >
+                <svg width={20} height={20}>
+                  <use href="/symbol-defs.svg#log-in-01" />
+                </svg>
+                <p>Log in</p>
+              </button>
+              <button
+                className={css.reg}
+                onClick={() => setIsAuthOpen(!isAuthOpen)}
+              >
+                Registration
+              </button>
+            </>
+          )}
         </div>
       </div>
       {isAuthOpen && (
-        <Modal onClose={() => setIsAuthOpen(false)} children={<AuthForm />} />
+        <Modal
+          onClose={() => setIsAuthOpen(false)}
+          children={<AuthForm onClose={() => setIsAuthOpen(false)} />}
+        />
       )}
       {isLoginOpen && (
         <Modal
           onClose={() => setIsLoginOpen(!isLoginOpen)}
-          children={<LoginForm />}
+          children={<LoginForm onClose={() => setIsLoginOpen(false)} />}
         />
       )}
     </header>

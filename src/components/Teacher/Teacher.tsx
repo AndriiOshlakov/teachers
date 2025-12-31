@@ -2,6 +2,8 @@ import { useState } from "react";
 import type { Teacher } from "../../types/TeacherType";
 import css from "./Teacher.module.css";
 import Button from "../Button/Button";
+import Modal from "../Modal/Modal";
+import BookForm from "../BookForm/BookForm";
 
 interface Props {
   teacher: Teacher;
@@ -10,7 +12,7 @@ interface Props {
 
 export default function TeacherComponent({ teacher, selectedLevel }: Props) {
   const [loadMore, setLoadMore] = useState(false);
-  console.log(loadMore);
+  const [isBookOpen, setIsBookOpen] = useState(false);
 
   return (
     <div className={css.teacherContainer}>
@@ -120,10 +122,21 @@ export default function TeacherComponent({ teacher, selectedLevel }: Props) {
         </ul>
         {loadMore && (
           <div className={css.btnBox}>
-            <Button text="Book trial lesson" onClick={() => {}} />
+            <Button
+              text="Book trial lesson"
+              onClick={() => {
+                setIsBookOpen(true);
+              }}
+            />
           </div>
         )}
       </div>
+      {isBookOpen && (
+        <Modal
+          onClose={() => setIsBookOpen(false)}
+          children={<BookForm teacher={teacher} />}
+        />
+      )}
     </div>
   );
 }

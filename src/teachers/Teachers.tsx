@@ -4,20 +4,27 @@ import { useEffect, useState } from "react";
 
 import type { Teacher } from "../types/TeacherType";
 import { fetchTeachers } from "../services/teachers";
+import Loader from "../components/Loader/Loader";
 
 export default function Teachers() {
   const [teachers, setTeachers] = useState<Teacher[] | []>([]);
   const [selectedLevel, setSelectedLevel] = useState<string>("");
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     async function loadTeachers() {
+      setIsLoading(true);
       const teachersArray = await fetchTeachers();
-      console.log(teachersArray);
+      setIsLoading(false);
       setTeachers(teachersArray as Teacher[]);
     }
 
     loadTeachers();
   }, []);
+
+  if (isLoading) {
+    return <Loader />;
+  }
 
   return (
     <section className={css.teachers}>
