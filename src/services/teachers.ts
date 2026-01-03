@@ -1,18 +1,53 @@
-import { ref, get } from "firebase/database";
+import {
+  ref,
+  query,
+  orderByKey,
+  startAfter,
+  limitToFirst,
+  get,
+} from "firebase/database";
 import { db } from "../firebase/firebaseConfig";
+import { type Teacher } from "../types/TeacherType";
 
-export async function fetchTeachers() {
-  try {
-    const snapshot = await get(ref(db, "teachers"));
+const PAGE_SIZE = 4;
+type TeacherFromDB = Omit<Teacher, "id">;
 
-    if (!snapshot.exists()) return [];
+export async function fetchTeachers(
+  lastKey: string | null
+): Promise<Teacher[]> {
+  // try {
+  //   const snapshot = await get(ref(db, "teachers"));
 
-    return Object.entries(snapshot.val()).map(([id, value]) => ({
-      id,
-      ...(value as object),
-    }));
-  } catch (error) {
-    console.error("Firebase error:", error);
-    return [];
-  }
+  //   if (!snapshot.exists()) return [];
+
+  //   return Object.entries(snapshot.val()).map(([id, value]) => ({
+  //     id,
+  //     ...(value as object),
+  //   }));
+  // } catch (error) {
+  //   console.error("Firebase error:", error);
+  //   return [];
+  // }
+
+  const teachersRef = ref(db, "teachers");
+
+  const q = lastKey
+    ? query(
+        teachersRef,
+        orderByKey(),
+        startAfter(lastKey),
+        limitToFirst(PAGE_SIZE)
+      )
+    : query(teachersRef, orderByKey(), limitToFirst(PAGE_SIZE));
+
+  const snapshot = await get(q);
+
+  if (!(await snapshot).exists()) return [];
+
+  const data = snapshot.val() as Record<string, TeacherFromDB>;
+
+  return Object.entries(data).map(([id, value]) => ({
+    id,
+    ...value,
+  }));
 }

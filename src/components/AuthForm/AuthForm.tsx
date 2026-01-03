@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Button from "../Button/Button";
 import { registerUser } from "../../services/auth";
+import { FirebaseError } from "firebase/app";
 
 interface AuthFormValues {
   name: string;
@@ -29,12 +30,38 @@ export default function AuthForm({ onClose }: Props) {
   } = useForm<AuthFormValues>({ resolver: yupResolver(authSchema) });
 
   const onSubmit = async (data: AuthFormValues) => {
-    await registerUser(data.email, data.password);
-    alert("Користувач зареєстрований");
-    onClose();
-    console.log(data);
-  };
+    try {
+      await registerUser(data.email, data.password);
+      alert("Користувач зареєстрований");
+      onClose();
+      console.log(data);
+    } catch (error) {
+      if (error instanceof FirebaseError) {
+        switch (error.code) {
+          case "auth/user-not-found":
+            alert("Користувача з такою поштою не існує");
+            break;
 
+          case "auth/wrong-password":
+            alert("Неправильний пароль");
+            break;
+
+          case "auth/invalid-credential":
+            alert("Неправильна пошта або пароль");
+            break;
+
+          case "auth/invalid-email":
+            alert("Неправильна пошта або пароль");
+            break;
+
+          default:
+            alert(error.message);
+        }
+      } else {
+        alert("Невідома помилка");
+      }
+    }
+  };
   return (
     <div className={css.authForm}>
       <h2>Registration</h2>
