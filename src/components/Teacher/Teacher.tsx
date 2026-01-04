@@ -8,9 +8,16 @@ import BookForm from "../BookForm/BookForm";
 interface Props {
   teacher: Teacher;
   selectedLevel: string;
+  isFavorite: boolean;
+  onToggleFavorite: () => void;
 }
 
-export default function TeacherComponent({ teacher, selectedLevel }: Props) {
+export default function TeacherComponent({
+  teacher,
+  selectedLevel,
+  isFavorite,
+  onToggleFavorite,
+}: Props) {
   const [loadMore, setLoadMore] = useState(false);
   const [isBookOpen, setIsBookOpen] = useState(false);
 
@@ -22,6 +29,9 @@ export default function TeacherComponent({ teacher, selectedLevel }: Props) {
           alt="Teacher's avatar"
           className={css.avatar}
         />
+        <svg width={12} height={12}>
+          <use href="/symbol-defs.svg#greenround" />
+        </svg>
       </div>
       <div className={css.container}>
         <div className={css.box}>
@@ -51,8 +61,12 @@ export default function TeacherComponent({ teacher, selectedLevel }: Props) {
               </span>
             </p>
           </div>
-          <button>
-            <svg width={26} height={26} className={css.heart}>
+          <button onClick={onToggleFavorite}>
+            <svg
+              width={26}
+              height={26}
+              className={isFavorite ? css.favorite : css.heart}
+            >
               <use href="/symbol-defs.svg#heart" />
             </svg>
           </button>

@@ -1,11 +1,17 @@
 import css from "./Teachers.module.css";
 import TeacherComponent from "../components/Teacher/Teacher";
 import { useCallback, useEffect, useState } from "react";
-
 import type { Teacher } from "../types/TeacherType";
 import { fetchTeachers } from "../services/teachers";
 import Loader from "../components/Loader/Loader";
 import Button from "../components/Button/Button";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "../firebase/firebaseConfig";
+import {
+  addToFavorites,
+  getFavorites,
+  removeFromFavorites,
+} from "../services/favoriteTeachers";
 
 type Filters = {
   language: string;
@@ -24,49 +30,46 @@ export default function Teachers() {
     level: "",
     price: "",
   });
+  const [favoriteIds, setFavoriteIds] = useState<Set<string>>(new Set());
 
-  // const loadTeachers = async () => {
-  //   if (isLoading || !hasMore) return;
+  useEffect(() => {
+    const unsub = onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        setFavoriteIds(new Set());
+        return;
+      }
+      const ids = await getFavorites(user.uid);
+      setFavoriteIds(new Set(ids));
+    });
+    return () => unsub();
+  }, []);
 
-  //   setIsLoading(true);
-  //   const newTeachers = await fetchTeachers(lastKey);
-  //   if (newTeachers.length < PAGE_SIZE) {
-  //     setHasMore(false);
-  //   }
-  //   if (newTeachers.length > 0) {
-  //     setLastKey(newTeachers[newTeachers.length - 1].id);
-  //     setTeachers((prev) => [...prev, ...newTeachers]);
-  //   }
-  //   setIsLoading(false);
-  // };
-
-  // const loadTeachers = useCallback(async () => {
-  //   if (isLoading || !hasMore) return;
-
-  //   setIsLoading(true);
-
-  //   const newTeachers = await fetchTeachers(lastKey);
-
-  //   if (newTeachers.length < PAGE_SIZE) {
-  //     setHasMore(false);
-  //   }
-
-  //   if (newTeachers.length > 0) {
-  //     setLastKey(newTeachers[newTeachers.length - 1].id);
-  //     setTeachers((prev) => {
-  //       // Створюємо список ID, які вже є в стейті
-  //       const existingIds = new Set(prev.map((t) => t.id));
-  //       // Фільтруємо нові дані, залишаючи тільки унікальні
-  //       const uniqueNewTeachers = newTeachers.filter(
-  //         (t) => !existingIds.has(t.id)
-  //       );
-
-  //       return [...prev, ...uniqueNewTeachers];
-  //     });
-  //   }
-
-  //   setIsLoading(false);
-  // }, [isLoading, hasMore, lastKey]);
+  const toggleFavorite = async (teacherId: string) => {
+    const user = auth.currentUser;
+    if (!user) {
+      alert("Для додавання вчителя в обрані необхідно зареєструватися!");
+      return;
+    }
+    const isFav = favoriteIds.has(teacherId);
+    setFavoriteIds((prev) => {
+      const next = new Set(prev);
+      if (isFav) {
+        next.delete(teacherId);
+      } else {
+        next.add(teacherId);
+      }
+      return next;
+    });
+    try {
+      if (isFav) {
+        await removeFromFavorites(user.uid, teacherId);
+      } else {
+        await addToFavorites(user.uid, teacherId);
+      }
+    } catch {
+      setFavoriteIds((prev) => new Set(prev));
+    }
+  };
 
   const loadTeachers = useCallback(async () => {
     // Використовуємо setIsLoading як прапорець, щоб не завантажувати двічі
@@ -96,14 +99,11 @@ export default function Teachers() {
     }
   }, [lastKey]); // Тільки lastKey провокує створення нової функції
 
-  // 2. Виправляємо useEffect
   useEffect(() => {
-    // Завантажуємо дані лише якщо список порожній
     if (teachers.length === 0 && !isLoading) {
       loadTeachers();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loadTeachers]); // Тепер додаємо loadTeachers сюди
+  }, [loadTeachers]);
 
   const applyFilters = (list: Teacher[]) => {
     return list.filter((t) => {
@@ -122,24 +122,16 @@ export default function Teachers() {
 
   const filteredTeachers = applyFilters(teachers);
 
-  // useEffect(() => {
-  //   loadTeachers();
-  // }, []);
-
-  // useEffect(() => {
-  //   if (isLoading || !hasMore) return;
-  //   if (filteredTeachers.length === 0 && teachers.length > 0) {
-  //     loadTeachers();
-  //   }
-  // }, [teachers, filters]);
-
-  // if (isLoading) {
-  //   return <Loader />;
-  // }
+  useEffect(() => {
+    if (isLoading || !hasMore) return;
+    const filtered = applyFilters(teachers);
+    if (filtered.length === 0 && teachers.length > 0) {
+      loadTeachers();
+    }
+  }, [teachers, filters]);
 
   return (
     <section className={css.teachers}>
-      {isLoading && <Loader />}
       <div className={css.teachersContainer}>
         <div className={css.filtersBox}>
           <div className={css.languagesBox}>
@@ -155,7 +147,7 @@ export default function Teachers() {
               <option value=""></option>
               <option value="English">English</option>
               <option value="German">German</option>
-              <option value="Spain">Spain</option>
+              <option value="Spanish">Spain</option>
               <option value="Italian">Italian</option>
               <option value="French">French</option>
               <option value="Korean">Korean</option>
@@ -219,9 +211,21 @@ export default function Teachers() {
                 <TeacherComponent
                   teacher={teacher}
                   selectedLevel={filters.level}
+                  isFavorite={favoriteIds.has(teacher.id)}
+                  onToggleFavorite={() => toggleFavorite(teacher.id)}
                 />
               </li>
             ))}
+            <li
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                width: "1184px",
+                alignItems: "center",
+              }}
+            >
+              {isLoading && <Loader />}
+            </li>
           </ul>
           {hasMore && !isLoading && (
             <div style={{ width: "188px", alignSelf: "center" }}>

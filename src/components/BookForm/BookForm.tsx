@@ -7,6 +7,9 @@ type Props = {
 };
 
 export default function BookForm({ teacher }: Props) {
+  const handleSubmit = () => {
+    alert("Ваше замовлення прийнято. Наш менеджер скоро з вами 'яжеться.");
+  };
   return (
     <div className={css.bookForm}>
       <h2>Book trial lesson</h2>
@@ -25,11 +28,11 @@ export default function BookForm({ teacher }: Props) {
           </span>
         </div>
       </div>
-      <form className={css.form}>
+      <form className={css.form} onSubmit={handleSubmit}>
         <fieldset>
           <legend>What is your main reason for learning English?</legend>
           <label>
-            <input type="radio" name="reason" value="career" />
+            <input type="radio" name="reason" value="career" defaultChecked />
             <svg width={24} height={24}>
               <use href="/symbol-defs.svg#RadioButton" />
             </svg>
@@ -64,9 +67,9 @@ export default function BookForm({ teacher }: Props) {
             Culture, travel or hobby
           </label>
         </fieldset>
-        <input type="text" placeholder="Full Name" />
-        <input type="email" placeholder="Email" />
-        <input type="tel" placeholder="Phone number" />
+        <input type="text" placeholder="Full Name" required />
+        <input type="email" placeholder="Email" required />
+        <input type="tel" placeholder="Phone number" required />
         <Button text="Book" type="submit" />
       </form>
     </div>
