@@ -33,36 +33,51 @@ export default function BookForm({ teacher }: Props) {
           <legend>What is your main reason for learning English?</legend>
           <label>
             <input type="radio" name="reason" value="career" defaultChecked />
-            <svg width={24} height={24}>
+            <svg width={24} height={24} className={css.radio}>
               <use href="/symbol-defs.svg#RadioButton" />
+            </svg>
+            <svg width={24} height={24} className={css.ring}>
+              <use href="/symbol-defs.svg#ring" />
             </svg>
             Career and business
           </label>
           <label>
             <input type="radio" name="reason" value="kids" />
-            <svg width={24} height={24}>
+            <svg width={24} height={24} className={css.radio}>
               <use href="/symbol-defs.svg#RadioButton" />
+            </svg>
+            <svg width={24} height={24} className={css.ring}>
+              <use href="/symbol-defs.svg#ring" />
             </svg>
             Lesson for kids
           </label>
           <label>
             <input type="radio" name="reason" value="abroad" />
-            <svg width={24} height={24}>
+            <svg width={24} height={24} className={css.radio}>
               <use href="/symbol-defs.svg#RadioButton" />
+            </svg>
+            <svg width={24} height={24} className={css.ring}>
+              <use href="/symbol-defs.svg#ring" />
             </svg>
             Living abroad
           </label>
           <label>
             <input type="radio" name="reason" value="exams" />
-            <svg width={24} height={24}>
+            <svg width={24} height={24} className={css.radio}>
               <use href="/symbol-defs.svg#RadioButton" />
+            </svg>
+            <svg width={24} height={24} className={css.ring}>
+              <use href="/symbol-defs.svg#ring" />
             </svg>
             Exams and coursework
           </label>
           <label>
             <input type="radio" name="reason" value="travel" />
-            <svg width={24} height={24}>
+            <svg width={24} height={24} className={css.radio}>
               <use href="/symbol-defs.svg#RadioButton" />
+            </svg>
+            <svg width={24} height={24} className={css.ring}>
+              <use href="/symbol-defs.svg#ring" />
             </svg>
             Culture, travel or hobby
           </label>

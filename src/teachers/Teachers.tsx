@@ -28,7 +28,7 @@ export default function Teachers() {
   const [filters, setFilters] = useState<Filters>({
     language: "",
     level: "",
-    price: "",
+    price: "30",
   });
   const [favoriteIds, setFavoriteIds] = useState<Set<string>>(new Set());
 
@@ -110,8 +110,11 @@ export default function Teachers() {
       if (filters.language && !t.languages.includes(filters.language)) {
         return false;
       }
-      if (filters.price && !(t.price_per_hour === Number(filters.price))) {
-        return false;
+      if (filters.price) {
+        const maxPrice = Number(filters.price);
+        if (t.price_per_hour > maxPrice) {
+          return false;
+        }
       }
       if (filters.level && !t.levels.includes(filters.level)) {
         return false;
@@ -144,7 +147,6 @@ export default function Teachers() {
                 setFilters((prev) => ({ ...prev, language: e.target.value }))
               }
             >
-              <option value=""></option>
               <option value="English">English</option>
               <option value="German">German</option>
               <option value="Spanish">Spain</option>
@@ -165,7 +167,6 @@ export default function Teachers() {
                 setFilters((prev) => ({ ...prev, level: e.target.value }))
               }
             >
-              <option value=""></option>
               <option value="A1 Beginner">A1 Beginner</option>
               <option value="A2 Elementary">A2 Elementary</option>
               <option value="B1 Intermediate">B1 Intermediate</option>
@@ -190,11 +191,10 @@ export default function Teachers() {
               }
             >
               <option value=""></option>
-              <option value="25">25 $</option>
-              <option value="27">27 $</option>
-              <option value="28">28 $</option>
+              <option value="10">10 $</option>
+              <option value="20">20 $</option>
               <option value="30">30 $</option>
-              <option value="35">35 $</option>
+              <option value="40">40 $</option>
             </select>
           </div>
         </div>

@@ -106,7 +106,19 @@ export default function TeacherComponent({
                 ({ comment, reviewer_name, reviewer_rating }, index) => (
                   <li className={css.review} key={index}>
                     <div>
-                      <div className={css.reviewerAvatar}></div>
+                      <div className={css.reviewerAvatar}>
+                        <img
+                          src="/ava.jpg"
+                          alt="user avatar"
+                          style={{
+                            display: "block",
+                            width: "44px",
+                            height: "44px",
+                            borderRadius: "100px",
+                            border: "none",
+                          }}
+                        />
+                      </div>
                       <div>
                         <p className={css.revierName}>{reviewer_name}</p>
                         <div className={css.reviewRating}>

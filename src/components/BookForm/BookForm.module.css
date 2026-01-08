@@ -99,11 +99,23 @@
     display: none;
 }
 
-.form fieldset label svg {
+.radio {
     color: #ccc;
     transition: all 0.3s ease;
+    display: none;
 }
 
-.form fieldset label input:checked+svg {
+.form fieldset label input:checked+.radio {
     color: #ff6600;
+    display: block;
+}
+
+.ring {
+    fill: transparent;
+    stroke: #ccc;
+
+}
+
+.form fieldset label input:checked~.ring {
+    display: none;
 }
