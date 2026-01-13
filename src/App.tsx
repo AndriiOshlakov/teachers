@@ -3,6 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import Home from "./home/Home";
 import Teachers from "./teachers/Teachers";
 import MainLayout from "./layouts/MainLayout";
+import FavouriteTeachers from "./favouriteTeachers/favouriteTeachers";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
 
       {/* Сторінки БЕЗ Header */}
       <Route path="/teachers" element={<Teachers />} />
+      <Route path="/favouriteTeachers" element={<FavouriteTeachers />} />
     </Routes>
   );
 }

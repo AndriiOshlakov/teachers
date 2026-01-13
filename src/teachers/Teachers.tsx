@@ -28,7 +28,7 @@ export default function Teachers() {
   const [filters, setFilters] = useState<Filters>({
     language: "",
     level: "",
-    price: "30",
+    price: "",
   });
   const [favoriteIds, setFavoriteIds] = useState<Set<string>>(new Set());
 

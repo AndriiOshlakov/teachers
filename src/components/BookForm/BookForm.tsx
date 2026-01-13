@@ -1,14 +1,46 @@
 import type { Teacher } from "../../types/TeacherType";
 import Button from "../Button/Button";
 import css from "./BookForm.module.css";
+import * as yup from "yup";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+
+const bookFormSchema = yup.object({
+  reason: yup.string().required("Choose a reason"),
+  name: yup.string().required("Full name is required"),
+  email: yup.string().email("Invalid email").required("Email is required"),
+  phone: yup.string().required("Phone number is required"),
+});
+
+export type BookFormValues = {
+  reason: string;
+  name: string;
+  email: string;
+  phone: string;
+};
 
 type Props = {
   teacher: Teacher;
+  onClose: () => void;
 };
 
-export default function BookForm({ teacher }: Props) {
-  const handleSubmit = () => {
+export default function BookForm({ teacher, onClose }: Props) {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<BookFormValues>({
+    resolver: yupResolver(bookFormSchema),
+    defaultValues: {
+      reason: "career",
+    },
+  });
+
+  const onSubmit = (data: BookFormValues) => {
+    console.log(data);
+
     alert("Ваше замовлення прийнято. Наш менеджер скоро з вами 'яжеться.");
+    onClose();
   };
   return (
     <div className={css.bookForm}>
@@ -28,11 +60,11 @@ export default function BookForm({ teacher }: Props) {
           </span>
         </div>
       </div>
-      <form className={css.form} onSubmit={handleSubmit}>
+      <form className={css.form} onSubmit={handleSubmit(onSubmit)}>
         <fieldset>
           <legend>What is your main reason for learning English?</legend>
           <label>
-            <input type="radio" name="reason" value="career" defaultChecked />
+            <input type="radio" value="career" {...register("reason")} />
             <svg width={24} height={24} className={css.radio}>
               <use href="/symbol-defs.svg#RadioButton" />
             </svg>
@@ -42,7 +74,7 @@ export default function BookForm({ teacher }: Props) {
             Career and business
           </label>
           <label>
-            <input type="radio" name="reason" value="kids" />
+            <input type="radio" {...register("reason")} value="kids" />
             <svg width={24} height={24} className={css.radio}>
               <use href="/symbol-defs.svg#RadioButton" />
             </svg>
@@ -52,7 +84,7 @@ export default function BookForm({ teacher }: Props) {
             Lesson for kids
           </label>
           <label>
-            <input type="radio" name="reason" value="abroad" />
+            <input type="radio" {...register("reason")} value="abroad" />
             <svg width={24} height={24} className={css.radio}>
               <use href="/symbol-defs.svg#RadioButton" />
             </svg>
@@ -62,7 +94,7 @@ export default function BookForm({ teacher }: Props) {
             Living abroad
           </label>
           <label>
-            <input type="radio" name="reason" value="exams" />
+            <input type="radio" {...register("reason")} value="exams" />
             <svg width={24} height={24} className={css.radio}>
               <use href="/symbol-defs.svg#RadioButton" />
             </svg>
@@ -72,7 +104,7 @@ export default function BookForm({ teacher }: Props) {
             Exams and coursework
           </label>
           <label>
-            <input type="radio" name="reason" value="travel" />
+            <input type="radio" {...register("reason")} value="travel" />
             <svg width={24} height={24} className={css.radio}>
               <use href="/symbol-defs.svg#RadioButton" />
             </svg>
@@ -81,10 +113,16 @@ export default function BookForm({ teacher }: Props) {
             </svg>
             Culture, travel or hobby
           </label>
+          {errors.reason && (
+            <p className={css.error}>{errors.reason.message}</p>
+          )}
         </fieldset>
-        <input type="text" placeholder="Full Name" required />
-        <input type="email" placeholder="Email" required />
-        <input type="tel" placeholder="Phone number" required />
+        <input type="text" placeholder="Full Name" {...register("name")} />
+        {errors.name && <p className={css.error}>{errors.name.message}</p>}
+        <input type="email" placeholder="Email" {...register("email")} />
+        {errors.email && <p className={css.error}>{errors.email.message}</p>}
+        <input type="tel" placeholder="Phone number" {...register("phone")} />
+        {errors.phone && <p className={css.error}>{errors.phone.message}</p>}
         <Button text="Book" type="submit" />
       </form>
     </div>

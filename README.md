@@ -1,73 +1,106 @@
-# React + TypeScript + Vite
+📚 Teachers — Online Language Learning Platform
+🔗 Live Demo
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+👉 https://teachers-phi.vercel.app/
 
-Currently, two official plugins are available:
+📌 Про проєкт
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Teachers — це вебзастосунок для компанії, що надає послуги онлайн-викладачів іноземних мов.
+Користувач може переглядати список викладачів, фільтрувати їх за різними параметрами, додавати улюблених викладачів до обраних та бронювати пробне заняття.
 
-## React Compiler
+Застосунок підтримує авторизацію користувачів, має приватні маршрути та працює з Firebase Realtime Database.
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+🧭 Структура застосунку
+🏠 Home
+Інформація про переваги компанії
+Call-to-action кнопка для переходу до сторінки викладачів
+Унікальна стилізація на основі макету
 
-## Expanding the ESLint configuration
+👩‍🏫 Teachers
+Список викладачів
+Фільтрація:
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- за мовою викладання
+- за рівнем знань учнів
+- за ціною за годину
+  Пагінація (Load more — по 4 картки)
+  Розгортання картки (Read more)
+  Додавання викладачів в обрані
+  Бронювання пробного заняття (Book trial lesson)
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+❤️ Favorites (приватна сторінка)
+Доступна тільки авторизованим користувачам
+Відображає список викладачів, доданих в обрані
+Стилістично аналогічна сторінці Teachers
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+🔐 Авторизація
+Реалізовано за допомогою Firebase Authentication:
+Реєстрація
+Логін
+Отримання даних поточного користувача
+Логаут
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Форми авторизації:
+реалізовані з react-hook-form
+валідація через yup
+всі поля обовʼязкові
+модальне вікно закривається:
+по кліку на ✖
+по кліку на backdrop
+по натисканню клавіші Esc
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+🗄 Firebase Realtime Database
+У базі створена колекція teachers з такими полями:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- name
+- surname
+- languages
+- levels
+- rating
+- reviews
+- price_per_hour
+- lessons_done
+- avatar_url
+- lesson_info
+- conditions
+- experience
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Для наповнення використовувався файл teachers.json.
+
+⭐ Обрані викладачі
+Неавторизований користувач:
+при кліку на ❤️ отримує повідомлення про необхідність авторизації
+
+Авторизований користувач:
+може додавати/видаляти викладачів з обраних
+стан зберігається між перезавантаженнями сторінки
+Дані обраних зберігаються через localStorage або Firebase
+
+🛠 Основні технології
+React
+TypeScript
+React Router
+Firebase
+Authentication
+Realtime Database
+react-hook-form
+yup
+CSS Modules
+Vite
+Vercel (deployment)
+
+🧪 Валідація та UX
+Всі обовʼязкові поля валідовані
+Відсутні помилки в консолі
+Інтерактивність відповідає технічному завданню
+Адаптація під десктоп
+Семантична та валідна HTML-розмітка
+
+📐 Макет і технічне завдання
+Верстка виконана відповідно до наданого макету
+Додатково реалізована фільтрація та маршрутизація
+Весь функціонал повністю відповідає технічному завданню
+
+🚀 Деплой
+Проєкт задеплоєний на Vercel
+🔗 https://teachers-phi.vercel.app/

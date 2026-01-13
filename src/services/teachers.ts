@@ -15,20 +15,6 @@ type TeacherFromDB = Omit<Teacher, "id">;
 export async function fetchTeachers(
   lastKey: string | null
 ): Promise<Teacher[]> {
-  // try {
-  //   const snapshot = await get(ref(db, "teachers"));
-
-  //   if (!snapshot.exists()) return [];
-
-  //   return Object.entries(snapshot.val()).map(([id, value]) => ({
-  //     id,
-  //     ...(value as object),
-  //   }));
-  // } catch (error) {
-  //   console.error("Firebase error:", error);
-  //   return [];
-  // }
-
   const teachersRef = ref(db, "teachers");
 
   const q = lastKey
