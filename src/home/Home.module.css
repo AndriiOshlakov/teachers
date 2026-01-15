@@ -21,6 +21,10 @@
     background-color: #f8f8f8;
 }
 
+.homeBoxDiv1>p {
+    width: 471px;
+}
+
 .homeBoxDiv1 h1 {
     font-weight: 500;
     font-size: 48px;

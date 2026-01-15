@@ -32,6 +32,22 @@
     color: #121417;
 }
 
+.reg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 39px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 1.25;
+}
+
+.reg:hover {
+    background: #121417;
+    color: #fff;
+}
+
 .navBox {
     display: flex;
     align-items: center;
@@ -43,9 +59,23 @@
     color: #121417;
 }
 
-.login {
+.login,
+.logout {
     display: flex;
     align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 1.25;
+    color: #121417;
+    border-radius: 12px;
+    padding: 14px 16px;
+}
+
+.login:hover,
+.logout:hover {
+    background: #121417;
+    color: #fff;
 }
 
 .auth {

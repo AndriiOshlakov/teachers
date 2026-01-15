@@ -7,8 +7,8 @@ import BookForm from "../BookForm/BookForm";
 
 interface Props {
   teacher: Teacher;
-  selectedLevel: string;
-  isFavorite: boolean;
+  selectedLevel?: string;
+  isFavorite?: boolean;
   onToggleFavorite: () => void;
 }
 

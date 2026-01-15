@@ -21,13 +21,13 @@ type Filters = {
 const PAGE_SIZE = 4;
 
 export default function Teachers() {
-  const [teachers, setTeachers] = useState<Teacher[] | []>([]);
+  const [teachers, setTeachers] = useState<Teacher[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [lastKey, setLastKey] = useState<string | null>(null);
   const [hasMore, setHasMore] = useState(true);
   const [filters, setFilters] = useState<Filters>({
     language: "",
-    level: "",
+    level: "A1 Beginner",
     price: "",
   });
   const [favoriteIds, setFavoriteIds] = useState<Set<string>>(new Set());
@@ -228,7 +228,7 @@ export default function Teachers() {
             </li>
           </ul>
           {hasMore && !isLoading && (
-            <div style={{ width: "188px", alignSelf: "center" }}>
+            <div style={{ width: "190px", alignSelf: "center" }}>
               <Button text="Load more" onClick={loadTeachers} />
             </div>
           )}
