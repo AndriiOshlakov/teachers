@@ -2,6 +2,8 @@
     margin: 0 auto;
     display: flex;
     justify-content: center;
+    background-color: #f8f8f8;
+    padding-top: 32px;
 }
 
 .noList {
@@ -22,4 +24,10 @@
     width: 200px;
     border-radius: 12px;
     text-align: center;
+}
+
+.favouritesContainer>ul {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
 }

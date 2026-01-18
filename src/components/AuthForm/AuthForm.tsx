@@ -5,6 +5,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import Button from "../Button/Button";
 import { registerUser } from "../../services/auth";
 import { FirebaseError } from "firebase/app";
+import { useState } from "react";
 
 interface AuthFormValues {
   name: string;
@@ -28,13 +29,17 @@ export default function AuthForm({ onClose }: Props) {
     handleSubmit,
     formState: { errors },
   } = useForm<AuthFormValues>({ resolver: yupResolver(authSchema) });
+  const [isAuth, setIsAuth] = useState(false);
 
   const onSubmit = async (data: AuthFormValues) => {
     try {
       await registerUser(data.email, data.password);
-      alert("Користувач зареєстрований");
-      onClose();
-      console.log(data);
+      setIsAuth(true);
+
+      setTimeout(() => {
+        setIsAuth(false);
+        onClose();
+      }, 5000);
     } catch (error) {
       if (error instanceof FirebaseError) {
         switch (error.code) {
@@ -63,25 +68,35 @@ export default function AuthForm({ onClose }: Props) {
     }
   };
   return (
-    <div className={css.authForm}>
-      <h2>Registration</h2>
-      <p>
-        Thank you for your interest in our platform! In order to register, we
-        need some information. Please provide us with the following information
-      </p>
-      <form onSubmit={handleSubmit(onSubmit)} className={css.form}>
-        <input type="text" placeholder="Name" {...register("name")} />
-        {errors.name && <span>{errors.name?.message}</span>}
-        <input type="email" placeholder="Email" {...register("email")} />
-        {errors.email && <span>{errors.email.message}</span>}
-        <input
-          type="password"
-          placeholder="Password"
-          {...register("password")}
-        />
-        {errors.password && <span>{errors.password.message}</span>}
-        <Button text="Sign Up" type="submit" />
-      </form>
+    <div>
+      {!isAuth && (
+        <div className={css.authForm}>
+          <h2>Registration</h2>
+          <p>
+            Thank you for your interest in our platform! In order to register,
+            we need some information. Please provide us with the following
+            information
+          </p>
+          <form onSubmit={handleSubmit(onSubmit)} className={css.form}>
+            <input type="text" placeholder="Name" {...register("name")} />
+            {errors.name && <span>{errors.name?.message}</span>}
+            <input type="email" placeholder="Email" {...register("email")} />
+            {errors.email && <span>{errors.email.message}</span>}
+            <input
+              type="password"
+              placeholder="Password"
+              {...register("password")}
+            />
+            {errors.password && <span>{errors.password.message}</span>}
+            <Button text="Sign Up" type="submit" />
+          </form>
+        </div>
+      )}
+      {isAuth && (
+        <p style={{ fontSize: "24px", fontWeight: "500" }}>
+          Користувача було зареєстровано.
+        </p>
+      )}
     </div>
   );
 }

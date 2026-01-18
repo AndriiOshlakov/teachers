@@ -5,6 +5,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import Button from "../Button/Button";
 import { loginUser } from "../../services/auth";
 import { FirebaseError } from "firebase/app";
+import { useState } from "react";
 
 interface LoginFormValues {
   email: string;
@@ -26,12 +27,17 @@ export default function LoginForm({ onClose }: Props) {
     handleSubmit,
     formState: { errors },
   } = useForm<LoginFormValues>({ resolver: yupResolver(loginSchema) });
+  const [isLogin, setIsLogin] = useState(false);
 
   const onSubmit = async (data: LoginFormValues) => {
     try {
       await loginUser(data.email, data.password);
-      alert("Користувач успішно залогінився");
-      onClose();
+      setIsLogin(true);
+
+      setTimeout(() => {
+        setIsLogin(false);
+        onClose();
+      }, 5000);
     } catch (error) {
       if (error instanceof FirebaseError) {
         switch (error.code) {
@@ -57,23 +63,32 @@ export default function LoginForm({ onClose }: Props) {
   };
 
   return (
-    <div className={css.loginForm}>
-      <h2>Log In</h2>
-      <p>
-        Welcome back! Please enter your credentials to access your account and
-        continue your search for an teacher.
-      </p>
-      <form onSubmit={handleSubmit(onSubmit)} className={css.form}>
-        <input type="email" placeholder="Email" {...register("email")} />
-        {errors.email && <span>{errors.email.message}</span>}
-        <input
-          type="password"
-          placeholder="Password"
-          {...register("password")}
-        />
-        {errors.password && <span>{errors.password.message}</span>}
-        <Button text="Log in" type="submit" />
-      </form>
+    <div>
+      {!isLogin && (
+        <div className={css.loginForm}>
+          <h2>Log In</h2>
+          <p>
+            Welcome back! Please enter your credentials to access your account
+            and continue your search for an teacher.
+          </p>
+          <form onSubmit={handleSubmit(onSubmit)} className={css.form}>
+            <input type="email" placeholder="Email" {...register("email")} />
+            {errors.email && <span>{errors.email.message}</span>}
+            <input
+              type="password"
+              placeholder="Password"
+              {...register("password")}
+            />
+            {errors.password && <span>{errors.password.message}</span>}
+            <Button text="Log in" type="submit" />
+          </form>
+        </div>
+      )}
+      {isLogin && (
+        <p style={{ fontSize: "24px", fontWeight: "500" }}>
+          Користувач вдало залогінився.
+        </p>
+      )}
     </div>
   );
 }

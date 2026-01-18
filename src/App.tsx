@@ -11,11 +11,9 @@ function App() {
       {/* Сторінки З Header */}
       <Route element={<MainLayout />}>
         <Route path="/" element={<Home />} />
+        <Route path="/teachers" element={<Teachers />} />
+        <Route path="/favouriteTeachers" element={<FavouriteTeachers />} />
       </Route>
-
-      {/* Сторінки БЕЗ Header */}
-      <Route path="/teachers" element={<Teachers />} />
-      <Route path="/favouriteTeachers" element={<FavouriteTeachers />} />
     </Routes>
   );
 }

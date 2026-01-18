@@ -7,7 +7,7 @@
 }
 
 .teachersContainer {
-    padding: 96px 128px;
+    padding: 40px 128px 96px;
     width: 1440px;
     display: flex;
     flex-direction: column;

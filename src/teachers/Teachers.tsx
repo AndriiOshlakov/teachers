@@ -12,6 +12,7 @@ import {
   getFavorites,
   removeFromFavorites,
 } from "../services/favoriteTeachers";
+import Modal from "../components/Modal/Modal";
 
 type Filters = {
   language: string;
@@ -31,6 +32,7 @@ export default function Teachers() {
     price: "",
   });
   const [favoriteIds, setFavoriteIds] = useState<Set<string>>(new Set());
+  const [isUserAuth, setIsUserAuth] = useState(false);
 
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, async (user) => {
@@ -47,7 +49,7 @@ export default function Teachers() {
   const toggleFavorite = async (teacherId: string) => {
     const user = auth.currentUser;
     if (!user) {
-      alert("Для додавання вчителя в обрані необхідно зареєструватися!");
+      setIsUserAuth(true);
       return;
     }
     const isFav = favoriteIds.has(teacherId);
@@ -234,6 +236,16 @@ export default function Teachers() {
           )}
         </div>
       </div>
+      {isUserAuth && (
+        <Modal
+          onClose={() => setIsUserAuth(false)}
+          children={
+            <p style={{ fontSize: "24px", fontWeight: "500" }}>
+              Для додавання вчителя в обрані необхідно зареєструватись.
+            </p>
+          }
+        ></Modal>
+      )}
     </section>
   );
 }
